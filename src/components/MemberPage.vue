@@ -102,6 +102,7 @@ export default {
     max-width: 800px;
     width: 90%;
     border-radius: 5px;
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .profile-card {

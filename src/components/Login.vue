@@ -67,6 +67,7 @@ export default {
         this.login = response.data.login;
         if (this.login) {
           EventBus.emit('login_ok')
+          await this.chkCart()
           this.$router.push('/Member');
         }
       } catch (err) {
@@ -82,7 +83,22 @@ export default {
       } catch (err) {
         console.error(`fail decode token ${err}`)
       }
-    }
+    },
+    async chkCart() { 
+      console.log('chkCart')
+      let members = { 
+        memEmail: this.loginname
+      }
+      try { 
+        const response = await axios.post(`http://localhost:3000/carts/chkcart`, members)
+        let cartId = response.data.cartId
+ 
+        EventBus.emit('cartdtlOK', { id: cartId })
+        console.log(cartId)
+      }
+      catch (err) { console.log(err) }
+    },
+
   }
 };
 </script>

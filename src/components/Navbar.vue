@@ -9,6 +9,10 @@
                 </router-link>
             </a>
 
+            <a class="nav-item">
+                <CartInfo />
+            </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -30,9 +34,11 @@
                             class="text-decoration-none nav-items fw-normal">Shopping</router-link>
                     </li>
 
+                    
                     <li class="nav-item" v-if="decodedToken != null">
                         <a href="#" @click="memLogout()" class="text-decoration-none nav-items fw-normal">Logout</a>
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -44,6 +50,7 @@ import Cookies from "js-cookie"
 import { jwtDecode } from "jwt-decode"
 import axios from 'axios';
 import { EventBus } from '../event-bus'
+import CartInfo from "./CartInfo.vue";
 
 axios.defaults.withCredentials = true
 
@@ -60,11 +67,15 @@ export default {
             memBirth: null
         }
     },
+    components: {
+        CartInfo
+    },
     mounted() {
         this.getCookie();
         EventBus.on('login_ok', () => {
             this.getCookie();
         })
+        this.chkCart();
     },
     methods: {
         getCookie() {
@@ -89,6 +100,7 @@ export default {
                     const response = await axios.get(`http://localhost:3000/logout`)
                     this.login = response.data.login
                     if (!this.login) {
+                        EventBus.emit('memlogout')
                         this.getCookie()
                         this.$router.push('/')
                     }
@@ -97,7 +109,22 @@ export default {
                     console.log(err)
                 }
             }
-        }
+        },
+        async chkCart() { 
+            console.log('chkCart')
+            let members = { 
+                memEmail: this.memEmail
+            }
+            try { 
+                const response = await axios.post(`http://localhost:3000/carts/chkcart`, members)
+                let cartId = response.data.cartId
+
+                EventBus.emit('cartdtlOK', { id: cartId })
+                console.log("---" + cartId)
+            }
+            catch (err) { console.log(err) }
+        },
+
     }
 }
 </script>

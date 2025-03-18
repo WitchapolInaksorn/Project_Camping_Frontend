@@ -4,6 +4,7 @@ import Login from "@/components/Login.vue";
 import Register from "@/components/Register.vue";
 import MemberPage from "@/components/MemberPage.vue";
 import ProductPage from "@/components/ProductPage.vue";
+import ProductShow from "@/components/ProductShow.vue";
 
 const routes = [
     {
@@ -35,6 +36,11 @@ const routes = [
         path : '/Product',
         name : 'Product',
         component : ProductPage
+    },
+    {
+        path : '/ProductShow/:pdId',
+        name : 'ProductShow',
+        component : ProductShow
     },
 ]
 

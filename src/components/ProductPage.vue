@@ -2,10 +2,10 @@
     <div class="background">
         <div class="content-container" style="margin-top: 60px;">
             <form @submit.prevent="searchProduct()" class="search-form">
-                <div class="container text-center">
+                <div class="container text-center" style="background: rgba(255, 255, 255, 0.95);">
                     <h2 class="mb-4">Product</h2>
-                    <div class="row justify-content-center">
-                        <div class="col-md-4 col-sm-6">
+                    <div class="row justify-content-center ">
+                        <div class="col-md-4 col-sm-6" >
                             <input type="text" class="form-control" v-model="stext" placeholder="Search Product...">
                         </div>
                         <div class="col-auto">
@@ -29,7 +29,10 @@
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
                                 <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
-                                <button class="btn btn-success"> see detail </button>
+                                <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
+                                    style="text-decoration: none;">
+                                    <button class="btn btn-success"> see detail </button>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -47,7 +50,10 @@
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
                                 <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
-                                <button class="btn btn-success"> see detail </button>
+                                <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
+                                    style="text-decoration: none;">
+                                    <button class="btn btn-success"> see detail </button>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -66,7 +72,10 @@
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
                                 <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
-                                <button class="btn btn-success"> see detail </button>
+                                <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
+                                    style="text-decoration: none;">
+                                    <button class="btn btn-success"> see detail </button>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -85,7 +94,10 @@
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
                                 <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
-                                <button class="btn btn-success"> see detail </button>
+                                <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
+                                    style="text-decoration: none;">
+                                    <button class="btn btn-success"> see detail </button>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -104,7 +116,10 @@
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
                                 <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
-                                <button class="btn btn-success"> see detail </button>
+                                <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
+                                    style="text-decoration: none;">
+                                    <button class="btn btn-success"> see detail </button>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -175,7 +190,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .background {
     background-image: url('../images/background.jpg');
     background-size: cover;
@@ -187,14 +202,13 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
     padding: 50px 0;
 }
 
 .content-container {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     padding: 40px 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
     max-width: 1500px;
     width: 90%;
     max-height: 90vh;
