@@ -27,13 +27,18 @@
         </div>
       </form>
       <p v-if="login === true" class="mt-3 text-center alert-text" style="color: darkgrey;">Login Successful</p>
-      <p v-else-if="login === false" class="mt-3 text-center alert-text" style="color: darkgrey;">Incorrect email or password</p>
+      <p v-else-if="login === false" class="mt-3 text-center alert-text" style="color: darkgrey;">Incorrect email or
+        password</p>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { EventBus } from '../event-bus'
+import Cookies from 'js-cookie'
+import { jwtDecode } from 'jwt-decode'
+
 axios.defaults.withCredentials = true;
 
 export default {
@@ -42,8 +47,14 @@ export default {
     return {
       memEmail: '',
       password: '',
-      login: null
+      login: null,
+      token: null,
+      decodedToken: null,
+
     };
+  },
+  mounted() {
+    this.getCookie();
   },
   methods: {
     async handleSubmit() {
@@ -55,10 +66,21 @@ export default {
         const response = await axios.post('http://localhost:3000/login', members);
         this.login = response.data.login;
         if (this.login) {
+          EventBus.emit('login_ok')
           this.$router.push('/Member');
         }
       } catch (err) {
         console.log(err);
+      }
+    },
+    getCookie() {
+      try {
+        this.token = Cookies.get('token');
+        this.decodedToken = jwtDecode(this.token)
+        if (this.decodedToken != null)
+          this.$router.push('/Member')
+      } catch (err) {
+        console.error(`fail decode token ${err}`)
       }
     }
   }
@@ -99,5 +121,4 @@ export default {
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-
 </style>

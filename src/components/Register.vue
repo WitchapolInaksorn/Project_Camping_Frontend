@@ -37,9 +37,9 @@
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="memGender" v-model="memGender" required>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">LGBTQ+</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="LGBTQ+">LGBTQ+</option>
                                 </select>
                                 <label for="memGender">Gender</label>
                             </div>
@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-sm-12">
                             <button class="btn btn-success float-end" type="submit">
-                                <i class="bi bi-check-lg"></i>&nbsp;ตกลง</button>
+                                <i class="bi bi-check-lg"></i>&nbsp;Regist</button>
                         </div>
 
                     </div>
@@ -96,6 +96,10 @@ export default {
                 const response = await axios.post(`http://localhost:3000/regist`, members)
                 this.regist = response.data.regist
                 this.backendmessage = response.data.message
+
+                if(this.regist){
+                    this.$router.push('/login')
+                }
             }
             catch (err) {
                 console.log(err)

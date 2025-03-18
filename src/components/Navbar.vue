@@ -2,7 +2,12 @@
     <nav class="navbar navbar-expand-lg nav-transparent fixed-top">
         <div class="container-fluid">
 
-            <a class="navbar-brand text-light" href="#">Navbar</a>
+            <a class="navbar-brand text-light" href="#" v-if="decodedToken == null">Navbar</a>
+            <a class="navbar-brand text-light" href="#" v-if="decodedToken != null">
+                <router-link to="/Member" class="text-decoration-none nav-items fw-normal email-highlight">
+                    {{ memName }}
+                </router-link>
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -26,12 +31,6 @@
                     </li>
 
                     <li class="nav-item" v-if="decodedToken != null">
-                        <router-link to="/Member" class="text-decoration-none nav-items fw-normal email-highlight">
-                            {{ memName }}
-                        </router-link>
-                    </li>
-
-                    <li class="nav-item" v-if="decodedToken != null">
                         <a href="#" @click="memLogout()" class="text-decoration-none nav-items fw-normal">Logout</a>
                     </li>
                 </ul>
@@ -44,7 +43,10 @@
 import Cookies from "js-cookie"
 import { jwtDecode } from "jwt-decode"
 import axios from 'axios';
+import { EventBus } from '../event-bus'
+
 axios.defaults.withCredentials = true
+
 export default {
     name: 'Navbar',
     data() {
@@ -53,7 +55,6 @@ export default {
             decodedToken: null,
             memEmail: null,
             memName: null,
-            dutyId: null,
             memPhone: null,
             memGender: null,
             memBirth: null
@@ -61,6 +62,9 @@ export default {
     },
     mounted() {
         this.getCookie();
+        EventBus.on('login_ok', () => {
+            this.getCookie();
+        })
     },
     methods: {
         getCookie() {
@@ -70,7 +74,6 @@ export default {
                 console.log(this.decodedToken)
                 this.memEmail = this.decodedToken.memEmail
                 this.memName = this.decodedToken.memName
-                this.dutyId = this.decodedToken.dutyId
                 this.memPhone = this.decodedToken.memPhone
                 this.memGender = this.decodedToken.memGender
                 this.memBirth = this.decodedToken.memBirth
