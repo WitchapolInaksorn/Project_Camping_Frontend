@@ -54,7 +54,7 @@ export default {
       try {
         const response = await axios.post('http://localhost:3000/login', members);
         this.login = response.data.login;
-        if (response.data.login) {
+        if (this.login) {
           this.$router.push('/Member');
         }
       } catch (err) {
