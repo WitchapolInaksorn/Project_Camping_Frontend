@@ -20,13 +20,15 @@
                     <h4 class="mb-4">
                         Camping Tent
                     </h4>
-                    <div v-for="(pd, pdId) in campingTent" :key="pdId" class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+                    <div v-for="(pd, pdId) in campingTent" :key="pdId"
+                        class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
                         <div class="card product-card">
-                            <img :src="`http://localhost:3000/tent/${pd.pdId}.jpg`" class="card-img-top product-img" alt="Product Image">
+                            <img :src="`http://localhost:3000/tent/${pd.pdId}.jpg`" class="card-img-top product-img"
+                                alt="Product Image">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price :  {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
                                 <button class="btn btn-success"> see detail </button>
                             </div>
                         </div>
@@ -36,13 +38,15 @@
             <div class="container mt-4">
                 <div class="row">
                     <h4 class="mb-4">Table & Chair</h4>
-                    <div v-for="(pd, pdId) in tableChair" :key="pdId" class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+                    <div v-for="(pd, pdId) in tableChair" :key="pdId"
+                        class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
                         <div class="card product-card">
-                            <img :src="`http://localhost:3000/table_chair/${pd.pdId}.jpg`" class="card-img-top product-img" alt="Product Image">
+                            <img :src="`http://localhost:3000/table_chair/${pd.pdId}.jpg`"
+                                class="card-img-top product-img" alt="Product Image">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price :  {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
                                 <button class="btn btn-success"> see detail </button>
                             </div>
                         </div>
@@ -53,13 +57,15 @@
             <div class="container mt-4">
                 <div class="row">
                     <h4 class="mb-4"> Sleeping Bag </h4>
-                    <div v-for="(pd, pdId) in sleepingBag" :key="pdId" class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+                    <div v-for="(pd, pdId) in sleepingBag" :key="pdId"
+                        class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
                         <div class="card product-card">
-                            <img :src="`http://localhost:3000/sleeping_bag/${pd.pdId}.jpg`" class="card-img-top product-img" alt="Product Image">
+                            <img :src="`http://localhost:3000/sleeping_bag/${pd.pdId}.jpg`"
+                                class="card-img-top product-img" alt="Product Image">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price :  {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
                                 <button class="btn btn-success"> see detail </button>
                             </div>
                         </div>
@@ -70,13 +76,15 @@
             <div class="container mt-4">
                 <div class="row">
                     <h4 class="mb-4"> Camping Equipment </h4>
-                    <div v-for="(pd, pdId) in eqtCamping" :key="pdId" class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+                    <div v-for="(pd, pdId) in eqtCamping" :key="pdId"
+                        class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
                         <div class="card product-card">
-                            <img :src="`http://localhost:3000/eqt_camping/${pd.pdId}.jpg`" class="card-img-top product-img" alt="Product Image">
+                            <img :src="`http://localhost:3000/eqt_camping/${pd.pdId}.jpg`"
+                                class="card-img-top product-img" alt="Product Image">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price :  {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
                                 <button class="btn btn-success"> see detail </button>
                             </div>
                         </div>
@@ -87,13 +95,15 @@
             <div class="container mt-4">
                 <div class="row">
                     <h4 class="mb-4"> Bag and Backpack </h4>
-                    <div v-for="(pd, pdId) in backpack" :key="pdId" class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+                    <div v-for="(pd, pdId) in backpack" :key="pdId"
+                        class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
                         <div class="card product-card">
-                            <img :src="`http://localhost:3000/backpack/${pd.pdId}.jpg`" class="card-img-top product-img" alt="Product Image">
+                            <img :src="`http://localhost:3000/backpack/${pd.pdId}.jpg`" class="card-img-top product-img"
+                                alt="Product Image">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price :  {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
                                 <button class="btn btn-success"> see detail </button>
                             </div>
                         </div>
@@ -111,32 +121,50 @@ export default {
     data() {
         return {
             products: [],
-            campingTent : [],
-            tableChair : [],
-            sleepingBag : [],
-            eqtCamping : [],
-            backpack : [],
+            campingTent: [],
+            tableChair: [],
+            sleepingBag: [],
+            eqtCamping: [],
+            backpack: [],
             stext: ''
         };
     },
     mounted() {
         axios.get('http://localhost:3000/products')
-            .then(res => { 
-                this.products = res.data; 
+            .then(res => {
+                this.products = res.data;
                 this.filterProduct();
             })
             .catch(err => console.log(err.message));
     },
+    watch: {
+        stext(newVal) {
+            if (newVal === "") {
+                this.searchProduct();
+            }
+        }
+    },
     methods: {
         searchProduct() {
-            axios.get(`http://localhost:3000/products/search/${this.stext}`)
-                .then(res => { 
-                    this.products = res.data; 
-                    this.filterProduct();
-                })
-                .catch(err => console.log(err.message));
+            if (this.stext == "") {
+                axios.get(`http://localhost:3000/products`)
+                    .then(res => {
+                        this.products = res.data;
+                        this.filterProduct();
+                    })
+                    .catch(err => console.log(err.message));
+            }
+            else {
+                axios.get(`http://localhost:3000/products/search/${this.stext}`)
+                    .then(res => {
+                        this.products = res.data;
+                        this.filterProduct();
+                    })
+                    .catch(err => console.log(err.message));
+            }
+
         },
-        filterProduct(){
+        filterProduct() {
             this.campingTent = this.products.filter(pd => pd.pdTypeId === "T01")
             this.tableChair = this.products.filter(pd => pd.pdTypeId === "T02")
             this.sleepingBag = this.products.filter(pd => pd.pdTypeId === "T03")
@@ -169,9 +197,9 @@ export default {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     max-width: 1500px;
     width: 90%;
-    max-height: 90vh; 
-    overflow: auto; 
-    position: relative; 
+    max-height: 90vh;
+    overflow: auto;
+    position: relative;
 }
 
 .search-form {
@@ -199,5 +227,4 @@ export default {
     height: 400px;
     object-fit: cover;
 }
-
 </style>
