@@ -4,7 +4,7 @@
 
             <a class="navbar-brand text-light" href="#" v-if="decodedToken == null">Navbar</a>
             <a class="navbar-brand text-light" href="#" v-if="decodedToken != null">
-                <router-link to="/Member" class="text-decoration-none fw-normal gradient-text">
+                <router-link to="/Member" class="text-decoration-none fw-bold gradient-text">
                     {{ memName }}
                 </router-link>
             </a>
@@ -146,6 +146,7 @@ export default {
             #ffb3ba
         );
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
