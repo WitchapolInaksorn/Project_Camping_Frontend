@@ -4,7 +4,7 @@
 
             <a class="navbar-brand text-light" href="#" v-if="decodedToken == null">Navbar</a>
             <a class="navbar-brand text-light" href="#" v-if="decodedToken != null">
-                <router-link to="/Member" class="text-decoration-none nav-items fw-normal email-highlight">
+                <router-link to="/Member" class="text-decoration-none fw-normal gradient-text">
                     {{ memName }}
                 </router-link>
             </a>
@@ -34,7 +34,12 @@
                             class="text-decoration-none nav-items fw-normal">Shopping</router-link>
                     </li>
 
-                    
+                    <li class="nav-item">
+                        <router-link to="/cartlist"
+                            class="text-decoration-none nav-items fw-normal">History</router-link>
+                    </li>
+
+
                     <li class="nav-item" v-if="decodedToken != null">
                         <a href="#" @click="memLogout()" class="text-decoration-none nav-items fw-normal">Logout</a>
                     </li>
@@ -110,12 +115,12 @@ export default {
                 }
             }
         },
-        async chkCart() { 
+        async chkCart() {
             console.log('chkCart')
-            let members = { 
+            let members = {
                 memEmail: this.memEmail
             }
-            try { 
+            try {
                 const response = await axios.post(`http://localhost:3000/carts/chkcart`, members)
                 let cartId = response.data.cartId
 
@@ -130,6 +135,20 @@ export default {
 </script>
 
 <style>
+.gradient-text {
+    background: linear-gradient(90deg,
+            #ffb3ff,
+            #d0baff,
+            #bae1ff,
+            #baffc9,
+            #ffffba,
+            #ffdfba,
+            #ffb3ba
+        );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .nav-transparent {
     top: 0;
     left: 0;

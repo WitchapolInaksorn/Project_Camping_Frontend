@@ -4,6 +4,7 @@
             {{cartId}} [{{ qty }}] - {{ money }}฿
         </button>
     </div>
+    <div v-if="cartId == null && qty == null && money == null"></div>
 </template>
 <script>
 import axios from 'axios';

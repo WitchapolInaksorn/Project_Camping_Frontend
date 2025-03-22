@@ -5,6 +5,8 @@ import Register from "@/components/Register.vue";
 import MemberPage from "@/components/MemberPage.vue";
 import ProductPage from "@/components/ProductPage.vue";
 import ProductShow from "@/components/ProductShow.vue";
+import CartShow from "@/components/CartShow.vue";
+import CartList from "@/components/CartList.vue";
 
 const routes = [
     {
@@ -42,6 +44,17 @@ const routes = [
         name : 'ProductShow',
         component : ProductShow
     },
+    {
+        path : '/cartShow/:cartId',
+        name : 'CartShow',
+        component : CartShow
+    },
+    {
+        path:'/cartList/',
+        name:'CartList',
+        component : CartList
+    },
+
 ]
 
 const router = createRouter({
