@@ -93,8 +93,9 @@ export default {
             token: "",
             decodedToken: null,
             memEmail: null,
+            memRole : null,
             cartId: null,
-            product: {},
+            product: [],
         };
     },
     mounted() {
@@ -113,6 +114,7 @@ export default {
                 this.token = await Cookies.get('token');
                 this.decodedToken = jwtDecode(this.token)
                 this.memEmail = this.decodedToken.memEmail
+                this.memRole = this.decodedToken.memRole
             } catch (err) {
                 console.error(`fail decode token ${err}`)
             }
@@ -128,9 +130,9 @@ export default {
             console.log("login แล้ว")
             await this.chkCart()
             if (this.cartId == null) {
-                this.addCart();
+                await this.addCart();
             }
-            await this.addCartDtl();
+            this.addCartDtl();
         },
         async chkCart() {
             console.log('chkCart')
@@ -140,7 +142,6 @@ export default {
             try {
                 const response = await axios.post(`http://localhost:3000/carts/chkcart`, members)
                 this.cartId = response.data.cartId
-                EventBus.emit('cartdtlOK', { id: this.cartId });
                 console.log(this.cartId)
             }
             catch (err) { console.log(err) }

@@ -1,17 +1,22 @@
 <template>
     <nav class="navbar navbar-expand-lg nav-transparent fixed-top">
         <div class="container-fluid">
+            <!-- ส่วนแสดงชื่อผู้ใช้ -->
+            <router-link 
+                :to="memRole === 'admin' ? '/Admin' : '/Member'" 
+                class="navbar-brand text-decoration-none fw-bold gradient-text"
+                v-if="decodedToken"
+            >
+                {{ memRole === 'admin' ? 'Admin' : memName }}
+            </router-link>
+            
+            <a class="navbar-brand text-light" href="#" v-if="!decodedToken">Camping Shop</a>
 
-            <a class="navbar-brand text-light" href="#" v-if="decodedToken == null">Navbar</a>
-            <a class="navbar-brand text-light" href="#" v-if="decodedToken != null">
-                <router-link to="/Member" class="text-decoration-none fw-bold gradient-text">
-                    {{ memName }}
-                </router-link>
-            </a>
-
-            <a class="nav-item">
-                <CartInfo />
-            </a>
+            <div v-if="decodedToken != null">
+                <a class="nav-item">
+                    <CartInfo />
+                </a>
+            </div>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -29,21 +34,25 @@
                         <router-link to="/Login" class="text-decoration-none nav-items fw-normal">Login</router-link>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="memRole == 'member' || decodedToken == null">
                         <router-link to="/Product"
                             class="text-decoration-none nav-items fw-normal">Shopping</router-link>
                     </li>
 
-                    <li class="nav-item">
-                        <router-link to="/cartlist"
-                            class="text-decoration-none nav-items fw-normal">History</router-link>
+                    <li class="nav-item" v-if="memRole == 'admin' && decodedToken != null">
+                        <router-link to="/Product"
+                            class="text-decoration-none nav-items fw-normal">Product</router-link>
                     </li>
 
+                    <li class="nav-item" v-if="decodedToken != null && memRole == 'member'">
+                        <router-link to="/cartlist" class="text-decoration-none nav-items fw-normal">
+                            Transaction
+                        </router-link>
+                    </li>
 
                     <li class="nav-item" v-if="decodedToken != null">
                         <a href="#" @click="memLogout()" class="text-decoration-none nav-items fw-normal">Logout</a>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -69,7 +78,9 @@ export default {
             memName: null,
             memPhone: null,
             memGender: null,
-            memBirth: null
+            memBirth: null,
+            memRole: null,
+            login: false
         }
     },
     components: {
@@ -77,59 +88,79 @@ export default {
     },
     mounted() {
         this.getCookie();
+
         EventBus.on('login_ok', () => {
             this.getCookie();
-        })
+        });
+
+        EventBus.on('update_profile', () => {
+            this.getCookie();
+        });
+
+        EventBus.on('cart_deleted', () => {
+            this.chkCart();
+        });
+
+        EventBus.on('cart_confirmed', () => {
+            this.chkCart();
+        });
+
         this.chkCart();
     },
     methods: {
         getCookie() {
             try {
                 this.token = Cookies.get('token');
-                this.decodedToken = jwtDecode(this.token)
-                console.log(this.decodedToken)
-                this.memEmail = this.decodedToken.memEmail
-                this.memName = this.decodedToken.memName
-                this.memPhone = this.decodedToken.memPhone
-                this.memGender = this.decodedToken.memGender
-                this.memBirth = this.decodedToken.memBirth
+                if (this.token) {
+                    this.decodedToken = jwtDecode(this.token);
+                    this.memEmail = this.decodedToken.memEmail;
+                    this.memName = this.decodedToken.memName;
+                    this.memPhone = this.decodedToken.memPhone;
+                    this.memGender = this.decodedToken.memGender;
+                    this.memBirth = this.decodedToken.memBirth;
+                    this.memRole = this.decodedToken.memRole;
+                } else {
+                    this.decodedToken = null;
+                }
             } catch (err) {
-                console.error(`fail decode token ${err}`)
-                this.decodedToken = null
+                console.error(`fail decode token ${err}`);
+                this.decodedToken = null;
             }
         },
         async memLogout() {
-            const cf = window.confirm('ต้องการออกจากระบบ?')
+            const cf = window.confirm('ต้องการออกจากระบบ?');
             if (cf) {
                 try {
-                    const response = await axios.get(`http://localhost:3000/logout`)
-                    this.login = response.data.login
+                    const response = await axios.get(`http://localhost:3000/logout`);
+                    this.login = response.data.login;
                     if (!this.login) {
-                        EventBus.emit('memlogout')
-                        this.getCookie()
-                        this.$router.push('/')
+                        Cookies.remove('token');
+                        EventBus.emit('memlogout');
+                        this.getCookie();
+                        this.$router.push('/');
                     }
-                }
-                catch (err) {
-                    console.log(err)
+                } catch (err) {
+                    console.log(err);
+                    this.decodedToken == null;
                 }
             }
         },
         async chkCart() {
-            console.log('chkCart')
+            if (!this.memEmail) return;
+            
+            console.log('chkCart');
             let members = {
                 memEmail: this.memEmail
-            }
+            };
             try {
-                const response = await axios.post(`http://localhost:3000/carts/chkcart`, members)
-                let cartId = response.data.cartId
-
-                EventBus.emit('cartdtlOK', { id: cartId })
-                console.log("---" + cartId)
+                const response = await axios.post(`http://localhost:3000/carts/chkcart`, members);
+                let cartId = response.data.cartId;
+                EventBus.emit('cartdtlOK', { id: cartId });
+                console.log("---" + cartId);
+            } catch (err) { 
+                console.log(err); 
             }
-            catch (err) { console.log(err) }
         },
-
     }
 }
 </script>
@@ -143,8 +174,7 @@ export default {
             #baffc9,
             #ffffba,
             #ffdfba,
-            #ffb3ba
-        );
+            #ffb3ba);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -191,11 +221,5 @@ export default {
     display: flex;
     justify-content: flex-end;
     width: 100%;
-}
-
-@media (max-width: 991px) {
-    .nav-links {
-        justify-content: flex-start;
-    }
 }
 </style>

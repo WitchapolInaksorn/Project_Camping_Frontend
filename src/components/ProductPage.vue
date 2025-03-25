@@ -5,7 +5,7 @@
                 <div class="container text-center" style="background: rgba(255, 255, 255, 0.95);">
                     <h2 class="mb-4">Product</h2>
                     <div class="row justify-content-center ">
-                        <div class="col-md-4 col-sm-6" >
+                        <div class="col-md-4 col-sm-6">
                             <input type="text" class="form-control" v-model="stext" placeholder="Search Product...">
                         </div>
                         <div class="col-auto">
@@ -17,7 +17,10 @@
 
             <div class="container">
                 <div class="row">
-                    <h4 class="mb-4">
+                    <router-link to="/ProductForm">
+                        <button class="btn btn-secondary text-center" style="width: 100px;">Edit</button>
+                    </router-link>
+                    <h4 class="mb-4 mt-4">
                         Camping Tent
                     </h4>
                     <div v-for="(pd, pdId) in campingTent" :key="pdId"

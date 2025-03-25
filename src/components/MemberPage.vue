@@ -13,6 +13,11 @@
                                 <p class="card-text"><strong>Gender :</strong> {{ memGender }}</p>
                                 <p class="card-text"><strong>Birthdate :</strong> {{ memBirth }}</p>
                             </div>
+                            <div class="d-flex justify-content-center align-items-center mt-2 mb-2">
+                                <router-link to="/MemberEditPage">
+                                    <button class="btn btn-secondary text-center" style="width: 100px;">Edit</button>
+                                </router-link>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
@@ -48,6 +53,8 @@
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import axios from 'axios'
+import { EventBus } from "@/event-bus";
+
 axios.defaults.withCredentials = true
 export default {
     name: 'MemberPage',
@@ -60,6 +67,7 @@ export default {
             memPhone: null,
             memGender: null,
             memBirth: null,
+            memRole: null,
             imageExists: false,
             fileMessage: null,
             file: null,
@@ -69,18 +77,19 @@ export default {
     mounted() {
         this.getCookie();
         this.checkImage();
+        EventBus.on("update_profile", this.getCookie);
     },
     methods: {
-        getCookie() {
+        async getCookie() {
             try {
                 this.token = Cookies.get('token');
                 this.decodedToken = jwtDecode(this.token);
-                console.log(this.decodedToken);
                 this.memEmail = this.decodedToken.memEmail;
                 this.memName = this.decodedToken.memName;
                 this.memPhone = this.decodedToken.memPhone;
                 this.memGender = this.decodedToken.memGender;
                 this.memBirth = this.formatDate(this.decodedToken.memBirth);
+                this.memRole = this.formatDate(this.decodedToken.memRole);
             } catch (err) {
                 console.error(`Fail to decode token: ${err}`);
             }

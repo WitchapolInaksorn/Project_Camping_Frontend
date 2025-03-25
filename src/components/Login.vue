@@ -45,8 +45,8 @@ export default {
   name: 'Login',
   data() {
     return {
-      memEmail: '',
-      password: '',
+      memEmail: null,
+      password: null,
       login: null,
       token: null,
       decodedToken: null,
@@ -66,8 +66,8 @@ export default {
         const response = await axios.post('http://localhost:3000/login', members);
         this.login = response.data.login;
         if (this.login) {
-          EventBus.emit('login_ok')
-          await this.chkCart()
+          EventBus.emit('login_ok');
+          await this.chkCart();
           this.$router.push('/Member');
         }
       } catch (err) {
@@ -87,7 +87,7 @@ export default {
     async chkCart() { 
       console.log('chkCart')
       let members = { 
-        memEmail: this.loginname
+        memEmail: this.memEmail
       }
       try { 
         const response = await axios.post(`http://localhost:3000/carts/chkcart`, members)

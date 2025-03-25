@@ -1,10 +1,10 @@
 <template>
-    <div v-if="cartId != null && qty != null && money != null" >
-        <button  class="btn btn-success btn-sm text-white" @click="$router.push(`/cartshow/${cartId}`)">
-            {{cartId}} [{{ qty }}] - {{ money }}฿
+    <div v-if="cartId != null && qty != null && money != null">
+        <button class="btn btn-success btn-sm text-white" @click="$router.push(`/cartshow/${cartId}`)">
+            {{ cartId }} [{{ qty }}] - {{ money }}฿
         </button>
     </div>
-    <div v-if="cartId == null && qty == null && money == null"></div>
+    <div v-if="cartId != null && qty == null && money == null"></div>
 </template>
 <script>
 import axios from 'axios';
@@ -17,16 +17,25 @@ export default {
             cartId: null,
             qty: 0,
             money: 0,
-            id:null
+            id: null
         }
     },
     mounted() {
         EventBus.on('cartdtlOK', (data) => {
             this.sumCart(data.id)
         })
+
         EventBus.on('memlogout', () => {
             this.clearCart()
         })
+
+        EventBus.on('cart_deleted', () => {
+            this.clearCart();
+        });
+
+        EventBus.on('cart_confirmed', () => {
+            this.clearCart();
+        });
     },
     methods: {
         async sumCart(cid) {
@@ -40,10 +49,10 @@ export default {
                 })
                 .catch(err => {
                     console.error(err);
+                    this.clearCart();
                 });
         },
-        clearCart()
-        {
+        clearCart() {
             console.log('Clear Cart')
             this.cartId = null
             this.qty = 0

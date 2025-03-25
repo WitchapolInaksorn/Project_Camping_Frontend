@@ -7,6 +7,8 @@ import ProductPage from "@/components/ProductPage.vue";
 import ProductShow from "@/components/ProductShow.vue";
 import CartShow from "@/components/CartShow.vue";
 import CartList from "@/components/CartList.vue";
+import MemberEditPage from "@/components/MemberEditPage.vue";
+import ProductForm from "@/components/ProductForm.vue";
 
 const routes = [
     {
@@ -50,9 +52,19 @@ const routes = [
         component : CartShow
     },
     {
-        path:'/cartList/',
+        path:'/cartList',
         name:'CartList',
         component : CartList
+    },
+    {
+        path:'/MemberEditPage',
+        name:'MemberEditPage',
+        component : MemberEditPage
+    },
+    {
+        path:'/ProductForm',
+        name:'ProductForm',
+        component : ProductForm
     },
 
 ]
