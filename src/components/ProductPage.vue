@@ -17,9 +17,6 @@
 
             <div class="container">
                 <div class="row">
-                    <router-link to="/ProductForm">
-                        <button class="btn btn-secondary text-center" style="width: 100px;">Edit</button>
-                    </router-link>
                     <h4 class="mb-4 mt-4">
                         Camping Tent
                     </h4>

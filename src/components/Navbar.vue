@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <!-- ส่วนแสดงชื่อผู้ใช้ -->
             <router-link 
-                :to="memRole === 'admin' ? '/Admin' : '/Member'" 
+                :to="memRole === 'admin' ? '/Member' : '/Member'" 
                 class="navbar-brand text-decoration-none fw-bold gradient-text"
                 v-if="decodedToken"
             >

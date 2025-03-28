@@ -9,7 +9,7 @@
                     <div v-for="(ct, cartId) in cart" :key="cartId" class="mt-5">
                         <div class="card product-card">
                             <div class="card-body">
-                                <h4 class="card-title text-primary opacity-75">Order No :  {{ ct.cartId }}</h4>
+                                <h4 class="card-title text-primary opacity-75">Order No : {{ ct.cartId }}</h4>
                                 <h5 class="card-subtitle mt-2 text-muted">
                                     Order date : {{ formattedDate(ct.cartDate) }}
                                 </h5>
@@ -122,7 +122,7 @@ export default {
             }
         },
         async deleteCart(cartId) {
-            if (!confirm("ยืนยันลบตะกร้า?")) return;
+            if (!confirm("Confirm delete Cart ?")) return;
             try {
                 await axios.delete(`http://localhost:3000/carts/deletecart/${cartId}`);
                 this.cart = this.cart.filter(item => item.cartId !== cartId);
@@ -134,17 +134,27 @@ export default {
         },
 
         async deleteCartDetail(pdId) {
-            if (!confirm("ยืนยันลบสินค้าออกจากตะกร้า?")) return;
+            if (!confirm("Confirm delete item in Cart ?")) return;
             try {
                 await axios.delete(`http://localhost:3000/carts/deletecartdtl/${pdId}`);
                 this.cartDtl = this.cartDtl.filter(item => item.pdId !== pdId);
+
+                await this.getCart();
+                await this.getCartDtl();
+                
+                if(this.cartDtl.length == 0){
+                    this.$router.push('/Product');
+                }
+
+                EventBus.emit('cartdtlOK', { id: this.cartId });
+
             } catch (err) {
                 console.error("Error deleting cart detail:", err);
             }
         },
 
         async confirmCart(cartId) {
-            if (!confirm("ยืนยันการสั่งซื้อ?")) return;
+            if (!confirm("Confirm Transaction ?")) return;
             try {
                 await axios.post(`http://localhost:3000/carts/confirmCart/${cartId}`);
                 this.cart = this.cart.filter(item => item.cartId !== cartId);
@@ -153,6 +163,12 @@ export default {
             } catch (err) {
                 console.error("Error confirming cart:", err);
             }
+        },
+        clearCart() {
+            console.log('Clear Cart')
+            this.cartId = null
+            this.qty = 0
+            this.money = 0
         }
     }
 }
