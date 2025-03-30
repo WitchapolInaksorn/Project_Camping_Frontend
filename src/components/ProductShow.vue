@@ -46,7 +46,7 @@
                                             <h5>Price</h5>
                                         </td>
                                         <td>
-                                            <h5>{{ product.pdPrice }} ฿</h5>
+                                            <h5>{{ Number(product.pdPrice).toLocaleString() }} ฿</h5>
                                         </td>
                                     </tr>
                                     <tr>
@@ -67,8 +67,22 @@
                                     </tr>
                                 </tbody>
                             </table>
+
                             <div class="d-flex justify-content-end">
-                                <button class="btn btn-success btn-md" @click="chkLogin()"><i class="bi bi-cart" ></i> Add to Cart</button>
+                                <div v-if="memRole === 'admin'">
+                                    <router-link :to="`/ProductUpdate/${this.$route.params.pdId}`">
+                                        <button class="btn btn-warning btn-md"><i class="bi bi-cart"></i>
+                                            Edit
+                                        </button>
+                                    </router-link>
+                                    <button class="btn btn-danger btn-md ms-3" @click="deleteitem()"><i
+                                            class="bi bi-bin"></i> Delete
+                                    </button>
+                                </div>
+
+                                <button class="btn btn-success btn-md" v-else @click="chkLogin()"><i
+                                        class="bi bi-cart"></i> Add to Cart
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -93,7 +107,7 @@ export default {
             token: "",
             decodedToken: null,
             memEmail: null,
-            memRole : null,
+            memRole: null,
             cartId: null,
             product: [],
         };
@@ -107,6 +121,7 @@ export default {
             .catch(err => {
                 console.error(err);
             });
+        this.getCookie();
     },
     methods: {
         async getCookie() {
@@ -163,6 +178,19 @@ export default {
                 console.log(err)
             }
         },
+        async deleteitem(){
+            if (!confirm("Confirm delete item in Cart ?")) return;
+            try {
+                const response = await axios.delete(
+                    `http://localhost:3000/products/${this.product.pdId}`
+                )
+                this.$router.push('/Product');
+                console.log(response.data)
+            }
+            catch (err) {
+                console.log(err)
+            }
+        },
         async addCartDtl() {
             console.log("addCartDtl")
             let cartdtl = {
@@ -174,7 +202,7 @@ export default {
                 const response = await axios.post(
                     `http://localhost:3000/carts/addcartdtl`, cartdtl
                 )
-                EventBus.emit('cartdtlOK',{id:this.cartId})
+                EventBus.emit('cartdtlOK', { id: this.cartId })
 
                 this.backendMessage = response.data.messageAddCartDtl;
                 console.log(response.data)

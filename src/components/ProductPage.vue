@@ -11,6 +11,11 @@
                         <div class="col-auto">
                             <button class="btn btn-primary" type="submit">Search</button>
                         </div>
+                        <div class="col-auto">
+                            <router-link to="/ProductForm" v-if="memRole == 'admin' && decodedToken != null">
+                                <button class="btn btn-success"> Add Product </button>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -28,7 +33,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ Number(pd.pdPrice).toLocaleString() }} ฿</div>
                                 <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
                                     style="text-decoration: none;">
                                     <button class="btn btn-success"> see detail </button>
@@ -49,7 +54,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ Number(pd.pdPrice).toLocaleString() }} ฿</div>
                                 <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
                                     style="text-decoration: none;">
                                     <button class="btn btn-success"> see detail </button>
@@ -71,7 +76,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ Number(pd.pdPrice).toLocaleString() }} ฿</div>
                                 <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
                                     style="text-decoration: none;">
                                     <button class="btn btn-success"> see detail </button>
@@ -93,7 +98,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ Number(pd.pdPrice).toLocaleString() }} ฿</div>
                                 <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
                                     style="text-decoration: none;">
                                     <button class="btn btn-success"> see detail </button>
@@ -115,7 +120,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ pd.pdName }}</h5>
                                 <div class="card-text">Brand : {{ pd.brand.brandName }}</div>
-                                <div class="card-text mb-2">Price : {{ pd.pdPrice }} ฿</div>
+                                <div class="card-text mb-2">Price : {{ Number(pd.pdPrice).toLocaleString() }} ฿</div>
                                 <router-link :to="{ name: 'ProductShow', params: { pdId: pd.pdId } }"
                                     style="text-decoration: none;">
                                     <button class="btn btn-success"> see detail </button>
@@ -131,6 +136,9 @@
 
 <script>
 import axios from 'axios';
+import Cookies from "js-cookie"
+import { jwtDecode } from "jwt-decode"
+
 export default {
     name: 'ProductPage',
     data() {
@@ -141,16 +149,11 @@ export default {
             sleepingBag: [],
             eqtCamping: [],
             backpack: [],
-            stext: ''
+            stext: '',
+            token: "",
+            decodedToken: null,
+            memRole: null
         };
-    },
-    mounted() {
-        axios.get('http://localhost:3000/products')
-            .then(res => {
-                this.products = res.data;
-                this.filterProduct();
-            })
-            .catch(err => console.log(err.message));
     },
     watch: {
         stext(newVal) {
@@ -159,15 +162,33 @@ export default {
             }
         }
     },
+    mounted() {
+        this.loadProducts();
+        this.checkAuth();
+    },
     methods: {
+        loadProducts() {
+            axios.get('http://localhost:3000/products')
+                .then(res => {
+                    this.products = res.data;
+                    this.filterProduct();
+                })
+                .catch(err => console.log(err.message));
+        },
+        checkAuth() {
+            try {
+                this.token = Cookies.get('token');
+                if (this.token) {
+                    this.decodedToken = jwtDecode(this.token);
+                    this.memRole = this.decodedToken.memRole;
+                }
+            } catch (err) {
+                console.error('Failed to decode token:', err);
+            }
+        },
         searchProduct() {
             if (this.stext == "") {
-                axios.get(`http://localhost:3000/products`)
-                    .then(res => {
-                        this.products = res.data;
-                        this.filterProduct();
-                    })
-                    .catch(err => console.log(err.message));
+                this.loadProducts();
             }
             else {
                 axios.get(`http://localhost:3000/products/search/${this.stext}`)
@@ -177,7 +198,6 @@ export default {
                     })
                     .catch(err => console.log(err.message));
             }
-
         },
         filterProduct() {
             this.campingTent = this.products.filter(pd => pd.pdTypeId === "T01")
@@ -189,7 +209,6 @@ export default {
     }
 };
 </script>
-
 <style scoped>
 .background {
     background-image: url('../images/background.jpg');

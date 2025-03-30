@@ -26,7 +26,7 @@
                             <td class="text-center">{{ ct.sqty ?? 0 }}</td>
                             <td class="text-end">{{ (ct.sprice ?? 0).toLocaleString() }}</td>
                             <td class="text-center">
-                                <i class="bi-x-lg text-danger delete-icon"></i>
+                                <i @click="deleteCart(ct.cartId)" class="bi-x-lg text-danger delete-icon"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -46,7 +46,7 @@ export default {
     data() {
         return {
             memEmail: null,
-            memName : null,
+            memName: null,
             cart: []
         };
     },
@@ -62,8 +62,25 @@ export default {
         async getCartList() {
             let customer = { id: this.memEmail };
             await axios.post(`http://localhost:3000/carts/getcartbycus`, customer)
-                .then(res => { this.cart = res.data; })
+                .then(res => { 
+                    this.cart = res.data;
+                    this.cart.forEach(item => {
+                        if (item.sprice === 0 || item.sprice === null) {
+                            this.deleteCart(item.cartId);
+                        }
+                    });
+                })
                 .catch(err => { console.error(err); });
+        },
+        async deleteCart(cartId) {
+            try {
+                await axios.delete(`http://localhost:3000/carts/deletecart/${cartId}`);
+                this.cart = this.cart.filter(item => item.cartId !== cartId);
+                EventBus.emit('cart_deleted');
+                this.$router.push('/Product');
+            } catch (err) {
+                console.error("Error deleting cart:", err);
+            }
         },
         getCookie() {
             try {
@@ -129,7 +146,8 @@ export default {
     font-size: 14px;
 }
 
-.table td, .table th {
+.table td,
+.table th {
     padding: 12px;
     border-bottom: 1px solid #dee2e6;
 }

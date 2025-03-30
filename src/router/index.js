@@ -8,6 +8,8 @@ import ProductShow from "@/components/ProductShow.vue";
 import CartShow from "@/components/CartShow.vue";
 import CartList from "@/components/CartList.vue";
 import MemberEditPage from "@/components/MemberEditPage.vue";
+import ProductForm from "@/components/ProductForm.vue";
+import ProductUpdate from "@/components/ProductUpdate.vue";
 
 const routes = [
     {
@@ -59,6 +61,16 @@ const routes = [
         path:'/MemberEditPage',
         name:'MemberEditPage',
         component : MemberEditPage
+    },
+    {
+        path:'/ProductForm',
+        name:'ProductForm',
+        component : ProductForm
+    },
+    {
+        path:'/ProductUpdate/:pdId',
+        name:'ProductUpdate',
+        component : ProductUpdate
     },
 
 ]

@@ -55,6 +55,11 @@
                     </table>
                 </div>
             </div>
+            <div v-if="memEmail != cusId">
+                <div class="text-center mt-5">
+                    <h4 class="text-muted">No shopping cart</h4>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -141,8 +146,8 @@ export default {
 
                 await this.getCart();
                 await this.getCartDtl();
-                
-                if(this.cartDtl.length == 0){
+
+                if (this.cartDtl.length == 0) {
                     this.$router.push('/Product');
                 }
 
